@@ -10,11 +10,15 @@ public class NavigationType {
 	
 	public static final Integer CATEGORY = new Integer(2);
 	
+	public static final Integer ENTRY_TYPE = new Integer(3);
+	
 	public static String getNavigationDescription(Integer navigatinTypeCode) {
 		if (navigatinTypeCode.equals(NavigationType.INDEX)) {
-			return "Página de index";
+			return "P\u00e1gina de Index";
 		} else if (navigatinTypeCode.equals(NavigationType.CATEGORY)) {
-			return "Página de categoria";
+			return "P\u00e1gina de Categoria";
+		} else if (navigatinTypeCode.equals(NavigationType.ENTRY_TYPE)) {
+			return "P\u00e1gina de Tipo de Lan\u00e7amento";
 		} else {
 			return null;
 		}

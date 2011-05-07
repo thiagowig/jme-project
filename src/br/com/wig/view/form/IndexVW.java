@@ -2,7 +2,6 @@ package br.com.wig.view.form;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.TextField;
 
 import br.com.wig.view.listener.IndexListenner;
 /**
@@ -16,16 +15,16 @@ public class IndexVW implements View {
 	
 	private Command categoryCommand;
 	
-	private TextField helloWorld;
+	private Command entryTypeCommand;
 
 	public Form getForm() {
 		this.form = new Form("Index");
-		this.helloWorld = new TextField("Bem vindo", "Thiago Fonseca", 100, TextField.ANY);
 		this.categoryCommand = new Command("Categoria", Command.SCREEN, 1);
-		
-		this.form.append(this.helloWorld);
+		this.entryTypeCommand = new Command("Tipo de Lan\u00e7amento", Command.SCREEN, 1);
+
 		this.form.setCommandListener(new IndexListenner());
 		this.form.addCommand(this.categoryCommand);
+		this.form.addCommand(this.entryTypeCommand);
 		
 		return this.form;
 	}

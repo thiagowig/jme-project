@@ -14,17 +14,25 @@ import br.com.wig.view.nav.NavigationType;
 public class IndexListenner implements CommandListener {
 	
 	private final String CATEGORY_LABEL = "Categoria";
+	
+	private final String ENTRY_TYPE_LABEL = "Tipo de Lan\u00e7amento";
 
 	public void commandAction(Command command, Displayable displayable) {
 		if (command.getLabel().equals(this.CATEGORY_LABEL)) {
 			this.enableCategory();
+		} else if (command.getLabel().equals(this.ENTRY_TYPE_LABEL)) {
+			this.enableEntryType();
 		}
-		System.out.println("Entrou");
 
 	}
 	
 	private void enableCategory() {
 		Main.navigationType = NavigationType.CATEGORY;
+		Main.enableViewByType();
+	}
+	
+	private void enableEntryType() {
+		Main.navigationType = NavigationType.ENTRY_TYPE;
 		Main.enableViewByType();
 	}
 

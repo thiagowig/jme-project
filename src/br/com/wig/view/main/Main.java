@@ -25,8 +25,7 @@ public class Main extends MIDlet {
 	
 	
 	protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
-		notifyDestroyed();
-		
+		notifyDestroyed();		
 	}
 
 	protected void pauseApp() {
