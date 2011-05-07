@@ -12,6 +12,8 @@ public class NavigationType {
 	
 	public static final Integer ENTRY_TYPE = new Integer(3);
 	
+	public static final Integer ENTRY = new Integer(4);
+	
 	public static String getNavigationDescription(Integer navigatinTypeCode) {
 		if (navigatinTypeCode.equals(NavigationType.INDEX)) {
 			return "P\u00e1gina de Index";
@@ -19,6 +21,8 @@ public class NavigationType {
 			return "P\u00e1gina de Categoria";
 		} else if (navigatinTypeCode.equals(NavigationType.ENTRY_TYPE)) {
 			return "P\u00e1gina de Tipo de Lan\u00e7amento";
+		} else if (navigatinTypeCode.equals(NavigationType.ENTRY)) {
+			return "P\u00e1gina de Lan\u00e7amento";
 		} else {
 			return null;
 		}

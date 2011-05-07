@@ -1,45 +1,49 @@
 package br.com.wig.view.listener;
 
-import java.io.IOException;
-
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
+import br.com.wig.commons.Strings;
 import br.com.wig.model.rms.CategoryDAO;
+import br.com.wig.model.rms.RecordManagement;
 import br.com.wig.view.main.Main;
-import br.com.wig.view.nav.NavigationType;
 /**
  * 
  * @author thiago
  *
  */
-public class CategoryListener implements CommandListener {
+public class CategoryListener extends AbstractListener implements CommandListener {
 	
-	private final String SAVE_LAVEL = "Salvar";
-	
-	private CategoryDAO dao;
+	private CategoryDAO dao = new CategoryDAO();
 
 	public void commandAction(Command command, Displayable displayable) {
-		if (command.getLabel().equals(this.SAVE_LAVEL)) {
-			try {
-				this.saveCategory();	
-				this.enableIndexView();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			this.executeCommand(command);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Main.enableErrorAndViewByType(Strings.CATEGORY);
 		}
+	}
+	
+	private void executeCommand(Command command) throws Exception {
+		if (command.getLabel().equals(Strings.SAVE)) {
+			this.saveCategory();	
+			Main.successAlert(Strings.CATEGORY, Strings.SUCCESS);
+		} else if (command.getLabel().equals(Strings.RESET_BASE)) {
+			super.restartDataBase();
+		} else if (command.getLabel().equals(Strings.BACK)) {
+			super.enableIndexView();
+		}
+	}
+	
+	private void saveCategory() throws Exception {
+		this.dao.saveCategory();
+	}
 
+	public RecordManagement getDAO() {
+		return this.dao;
 	}
 	
-	private void saveCategory() throws IOException {
-		dao = new CategoryDAO();
-		dao.saveCategory();
-	}
-	
-	private void enableIndexView() {
-		Main.navigationType = NavigationType.INDEX;
-		Main.enableViewByType();
-	}
 
 }

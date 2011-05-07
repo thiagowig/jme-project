@@ -1,4 +1,4 @@
-package br.com.wig.model.rms.util;
+package br.com.wig.commons;
 /**
  * 
  * @author thiago
