@@ -140,4 +140,28 @@ public class EntryTypeDAO extends RecordManagement {
 		
 		return entryTypeName;
 	}
+	
+	public Vector findByCategoryId(int currentCategoryId) throws Exception {
+		Vector entryTypes = new Vector();
+		
+		RecordEnumeration recordEnumeration = super.retrieveAllRecordsEnumeration();
+		while(recordEnumeration.hasNextElement()) {
+			byte[] entryTypeRecord = recordEnumeration.nextRecord();
+			ByteArrayInputStream byteArray = new ByteArrayInputStream(entryTypeRecord);
+			DataInputStream dataInput = new DataInputStream(byteArray);
+			String entryTypeName = dataInput.readUTF();
+			int categoryId = dataInput.readInt();
+			if (currentCategoryId == categoryId) {
+				entryTypes.addElement(entryTypeName);				
+			}
+		}
+		
+		recordEnumeration.destroy();
+		super.closeRecordStore();
+		
+		return entryTypes;
+	}
+	
+	
+	
 }

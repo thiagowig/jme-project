@@ -34,6 +34,14 @@ public class Strings {
 	
 	public static final String CATEGORY_REQUIRED = "\u00c9 necess\u00e1rio que existam categorias cadastradas.";
 	
+	public static final String ENTRY = "Lan\u00e7amento";
+	
+	public static final String VALUE = "Valor";
+	
+	public static final String DATE = "Data";
+	
+	public static final String SELECT_CATEGORY = "Selecione a categoria";
+	
 	public static boolean isEmpty(String valueToCheck) {
 		return valueToCheck == null ? true : valueToCheck.equals("") ? true : false;
 	}

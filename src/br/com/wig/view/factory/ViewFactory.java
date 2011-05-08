@@ -1,9 +1,11 @@
 package br.com.wig.view.factory;
 
 import javax.microedition.lcdui.Form;
+
 import br.com.wig.exception.ViewNotFoundException;
 import br.com.wig.view.form.CategoryVW;
 import br.com.wig.view.form.EntryTypeVW;
+import br.com.wig.view.form.EntryVW;
 import br.com.wig.view.form.IndexVW;
 import br.com.wig.view.form.View;
 import br.com.wig.view.main.Main;
@@ -33,6 +35,8 @@ public class ViewFactory {
 			return new CategoryVW();
 		} else if (navigationTypeCode.equals(NavigationType.ENTRY_TYPE)) {
 			return new EntryTypeVW();
+		} else if (navigationTypeCode.equals(NavigationType.ENTRY)) {
+			return new EntryVW();
 		}
 		return null;
 	}

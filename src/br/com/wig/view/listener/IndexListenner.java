@@ -19,6 +19,8 @@ public class IndexListenner implements CommandListener {
 			this.enableCategory();
 		} else if (command.getLabel().equals(Strings.ENTRY_TYPE)) {
 			this.enableEntryType();
+		} else if (command.getLabel().equals(Strings.ENTRY)) {
+			this.enableEntry();
 		}
 
 	}
@@ -30,6 +32,11 @@ public class IndexListenner implements CommandListener {
 	
 	private void enableEntryType() {
 		Main.navigationType = NavigationType.ENTRY_TYPE;
+		Main.enableViewByType();
+	}
+	
+	private void enableEntry() {
+		Main.navigationType = NavigationType.ENTRY;
 		Main.enableViewByType();
 	}
 
