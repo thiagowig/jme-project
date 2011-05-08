@@ -9,7 +9,9 @@ import java.util.Vector;
 import javax.microedition.rms.RecordEnumeration;
 
 import br.com.wig.commons.Strings;
+import br.com.wig.exception.DuplicatedValueException;
 import br.com.wig.exception.EmptyDataException;
+import br.com.wig.exception.ValueNotFoundException;
 import br.com.wig.view.form.EntryTypeVW;
 
 /**
@@ -27,7 +29,13 @@ public class EntryTypeDAO extends RecordManagement {
 	
 	public void saveEntryType() throws Exception {
 		CategoryDAO categoryDAO = new CategoryDAO();
-		String categoryName = EntryTypeVW.categoriesChoice.getString(EntryTypeVW.categoriesChoice.getSelectedIndex());
+		String categoryName;
+		try {
+			categoryName = EntryTypeVW.categoriesChoice.getString(EntryTypeVW.categoriesChoice.getSelectedIndex());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ValueNotFoundException(Strings.CATEGORY_REQUIRED);
+		}
 		int categoryId = categoryDAO.findIdByName(categoryName);
 		Vector errorMessages = this.validateSave(categoryId);
 		if (errorMessages.size() == 0) {
@@ -47,11 +55,13 @@ public class EntryTypeDAO extends RecordManagement {
 		}
 	}
 	
-	private Vector validateSave(int categoryId) throws EmptyDataException {
+	private Vector validateSave(int categoryId) throws EmptyDataException, Exception, DuplicatedValueException {
 		Vector errorMessages = new Vector();
 		
 		if (Strings.isEmpty(EntryTypeVW.name.getString())) {
 			errorMessages.addElement(Strings.NAME);
+		} else if (this.findIdByName(EntryTypeVW.name.getString()) != 0){
+			throw new DuplicatedValueException(Strings.DUPLICATED_VALUE + ": " + Strings.NAME);
 		}
 		
 		if (Strings.isEmpty(categoryId)) {
@@ -85,5 +95,49 @@ public class EntryTypeDAO extends RecordManagement {
 		recordEnumeration.destroy();
 		super.closeRecordStore();
 		return categories;
+	}
+	
+	public int findIdByName(String currentEntryTypeName) throws Exception {
+		int entryTypeId = 0;
+		String entryTypeName;
+		
+		RecordEnumeration recordEnumeration = super.retrieveAllRecordsEnumeration();
+		while(recordEnumeration.hasNextElement()) {
+			entryTypeId = recordEnumeration.nextRecordId();
+			entryTypeName = this.retrieveNameById(entryTypeId);
+			if (currentEntryTypeName.equalsIgnoreCase(entryTypeName)) {
+				recordEnumeration.destroy();
+				super.closeRecordStore();
+				return entryTypeId;
+			}
+			
+		}
+		
+		recordEnumeration.destroy();
+		super.closeRecordStore();
+		
+		return 0;
+	}
+	
+	public String retrieveNameById(int recordId) {
+		try {
+			return this.retrieveEntryTypeNameById(recordId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private String retrieveEntryTypeNameById(int recordId) throws Exception {
+		String entryTypeName;
+		
+		byte[] categoryRecord = super.retrieveById(recordId);
+		ByteArrayInputStream byteArray = new ByteArrayInputStream(categoryRecord);
+		DataInputStream dataInput = new DataInputStream(byteArray);
+		entryTypeName = dataInput.readUTF();
+		
+		super.closeRecordStore();
+		
+		return entryTypeName;
 	}
 }

@@ -4,12 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Vector;
 
 import javax.microedition.rms.RecordEnumeration;
-import javax.microedition.rms.RecordStoreException;
 
+import br.com.wig.commons.Strings;
+import br.com.wig.exception.DuplicatedValueException;
+import br.com.wig.exception.EmptyDataException;
 import br.com.wig.view.form.CategoryVW;
 
 /**
@@ -25,29 +26,38 @@ public class CategoryDAO extends RecordManagement {
 		return this.STORE_NAME;
 	}
 	
-	public void saveCategory() throws IOException {
+	public void saveCategory() throws Exception {
+		this.validateSave();
+		
 		ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 		DataOutputStream dataOutput = new DataOutputStream(byteArray);
 		dataOutput.writeUTF(CategoryVW.name.getString());
-		
 		super.saveRecord(byteArray.toByteArray());
-		
 		byteArray.close();
 		dataOutput.close();
+	}
+	
+	private void validateSave() throws Exception {
+		if(Strings.isEmpty(CategoryVW.name.getString())) {
+			throw new EmptyDataException(Strings.REQUIRED_VALUES_NOT_SETTED + ": " + Strings.NAME);
+		}
+		
+		int categoryId = this.findIdByName(CategoryVW.name.getString());
+		if (categoryId != 0) {
+			throw new DuplicatedValueException(Strings.DUPLICATED_VALUE + ": " + Strings.NAME);
+		}
 	}
 	
 	public Vector findAllRecords() {	
 		try {
 			return this.returnAllElements();
-		} catch (RecordStoreException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 		return null;
 	}
 	
-	public Vector returnAllElements() throws RecordStoreException, IOException {
+	public Vector returnAllElements() throws Exception {
 		Vector categories = new Vector();
 		RecordEnumeration recordEnumeration = super.retrieveAllRecordsEnumeration();
 		while(recordEnumeration.hasNextElement()) {
@@ -93,11 +103,16 @@ public class CategoryDAO extends RecordManagement {
 		while(recordEnumeration.hasNextElement()) {
 			categoryId = recordEnumeration.nextRecordId();
 			categoryName = this.retrieveNameById(categoryId);
-			if (currentCategoryName.equals(categoryName)) {
+			if (currentCategoryName.equalsIgnoreCase(categoryName)) {
+				recordEnumeration.destroy();
+				super.closeRecordStore();
 				return categoryId;
 			}
 			
 		}
+		
+		recordEnumeration.destroy();
+		super.closeRecordStore();
 		
 		return 0;
 	}

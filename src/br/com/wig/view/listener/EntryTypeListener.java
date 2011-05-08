@@ -5,7 +5,9 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
 import br.com.wig.commons.Strings;
+import br.com.wig.exception.DuplicatedValueException;
 import br.com.wig.exception.EmptyDataException;
+import br.com.wig.exception.ValueNotFoundException;
 import br.com.wig.model.rms.EntryTypeDAO;
 import br.com.wig.model.rms.RecordManagement;
 import br.com.wig.view.main.Main;
@@ -22,6 +24,10 @@ public class EntryTypeListener extends AbstractListener implements CommandListen
 		try {
 			this.executeCommand(command);
 		} catch (EmptyDataException e) {
+			Main.enableErrorAndViewByType(Strings.ENTRY_TYPE, e.getMessage());
+		} catch (DuplicatedValueException e) {
+			Main.enableErrorAndViewByType(Strings.ENTRY_TYPE, e.getMessage());
+		} catch (ValueNotFoundException e) {
 			Main.enableErrorAndViewByType(Strings.ENTRY_TYPE, e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();

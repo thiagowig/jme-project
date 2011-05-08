@@ -5,6 +5,8 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
 import br.com.wig.commons.Strings;
+import br.com.wig.exception.DuplicatedValueException;
+import br.com.wig.exception.EmptyDataException;
 import br.com.wig.model.rms.CategoryDAO;
 import br.com.wig.model.rms.RecordManagement;
 import br.com.wig.view.main.Main;
@@ -20,6 +22,12 @@ public class CategoryListener extends AbstractListener implements CommandListene
 	public void commandAction(Command command, Displayable displayable) {
 		try {
 			this.executeCommand(command);
+		} catch (DuplicatedValueException e) {
+			e.printStackTrace();
+			Main.enableErrorAndViewByType(Strings.CATEGORY, e.getMessage());
+		} catch (EmptyDataException e) {
+			e.printStackTrace();
+			Main.enableErrorAndViewByType(Strings.CATEGORY, e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			Main.enableErrorAndViewByType(Strings.CATEGORY);

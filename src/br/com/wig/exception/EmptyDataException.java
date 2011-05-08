@@ -6,8 +6,8 @@ package br.com.wig.exception;
  */
 public class EmptyDataException extends RuntimeException {
 	
-	public EmptyDataException(String emptyData) {
-		super(emptyData);
+	public EmptyDataException(String message) {
+		super(message);
 	}
 
 }

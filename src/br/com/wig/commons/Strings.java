@@ -28,7 +28,11 @@ public class Strings {
 	
 	public static final String REQUIRED_VALUES_NOT_SETTED = "Valores obrigat\u00f3rios n\u00e3o preenchidos";
 	
+	public static final String DUPLICATED_VALUE = "Valores duplicados";
+	
 	public static final String SUCCESS = "A opera\u00e7\u00e3o foi efetuada com sucesso";
+	
+	public static final String CATEGORY_REQUIRED = "\u00c9 necess\u00e1rio que existam categorias cadastradas.";
 	
 	public static boolean isEmpty(String valueToCheck) {
 		return valueToCheck == null ? true : valueToCheck.equals("") ? true : false;
